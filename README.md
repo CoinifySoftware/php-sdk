@@ -45,6 +45,11 @@ With the [Coinify invoice API](https://coinify.com/docs/api/#invoices), you can 
 $response = $api->invoicesList();
 ```
 
+The interface for the `invoiceList` method is the following:
+```
+public function invoicesListGet();
+```
+
 #### Creating a new invoice
 **Example:** Create an invoice for 20 USD.
 
@@ -55,16 +60,32 @@ $plugin_version = '1';
 $response = $api->invoiceCreate(20.0, "USD", $plugin_name, $plugin_version);
 ```
 
+The interface for the `invoiceCreate` method is the following:
+```
+public function invoiceCreate($amount, $currency, $plugin_name, $plugin_version,
+    $description=null, $custom=null, $callback_url=null, $callback_email=null, $return_url=null, $cancel_url=null);
+```
+
 #### Get a specific invoice
 ```
 $invoice_id = 12345;
 $response = $api->invoiceGet($invoice_id);
 ```
 
+The interface for the `invoiceGet` method is the following:
+```
+public function invoiceGet($invoice_id);
+```
+
 #### Update an existing invoice
 ```
 $invoice_id = 12345;
-$response = $api->invoiceGet($invoice_id);
+$response = $api->invoiceUpdate($invoice_id, 'Updated description');
+```
+
+The interface for the `invoiceUpdate` method is the following:
+```
+public function invoiceUpdate($invoice_id, $description=null, $custom=null);
 ```
 
 ### Catching errors
