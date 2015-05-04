@@ -88,6 +88,63 @@ The interface for the `invoiceUpdate` method is the following:
 public function invoiceUpdate($invoice_id, $description=null, $custom=null);
 ```
 
+### Buy orders
+With the [Coinify Buy order API](https://coinify.com/docs/api/#buy-orders), *preapproved* merchants
+can use their fiat account balance to buy bitcoins. The API exposes methods
+for *listing* all buy orders, *getting* a specific buy order, and *create* and *confirm*
+new buy orders:
+
+
+#### Listing all buy orders
+```php
+$response = $api->buyOrdersList();
+```
+
+The interface for the `buyOrdersList` method is the following:
+```php
+public function buyOrdersList();
+```
+
+#### Get a specific buy order
+```php
+$buy_order_id = 12345;
+$response = $api->buyOrderGet($buy_order_id);
+```
+
+The interface for the `buyOrderGet` method is the following:
+```php
+public function buyOrderGet($buy_order_id);
+```
+
+#### Creating a new buy order
+**Example:** Buy bitcoins for 100 USD.
+
+```php
+$amount = 100;
+$currency = 'USD';
+$btc_address = '<my_bitcoin_address>';
+
+$response = $api->buyOrderCreate( $amount, $currency, $btc_address );
+```
+
+The interface for the `buyOrderCreate` method is the following:
+```php
+public function buyOrderCreate( $amount, $currency, $btc_address, 
+    $instant_order=null, $callback_url=null, $callback_email=null );
+```
+
+#### Confirming a buy order
+```php
+$buy_order_id = 12345;
+$response = $api->buyOrderConfirm($buy_order_id);
+```
+
+The interface for the `buyOrderConfirm` method is the following:
+```php
+public function buyOrderConfirm($buy_order_id);
+```
+
+
 ### Catching errors
 As touched upon in the "Response format" section, if the responses from the API calls are `false`, an error occurred with cURL trying to communicate with the API. The last cURL error and error number can be retrieved with `$api->last_curl_error` and `$api->last_curl_errno`.
 

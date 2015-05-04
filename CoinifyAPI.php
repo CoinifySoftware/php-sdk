@@ -48,6 +48,11 @@ class CoinifyAPI {
      */
     const API_DEFAULT_BASE_URL = "https://api.coinify.com";
 
+    /**
+     * @param string $api_key Your Coinify API key
+     * @param string $api_secret Your Coinify API secret
+     * @param string|null $api_base_url Custom API base URL for testing. Set to null for default URL
+     */
     public function __construct( $api_key, $api_secret, $api_base_url=null ) {
         $this->api_key = $api_key;
         $this->api_secret = $api_secret;
@@ -140,6 +145,70 @@ class CoinifyAPI {
     }
 
     /**
+     * Returns an array of all your Coinify buy orders
+     *
+     * @link https://coinify.com/docs/api/#list-all-buy-orders
+     *
+     * @return array A PHP array as described in https://coinify.com/docs/api/#response-format. If success,
+     * then the 'data' value contains a list of all your buy orders.
+     */
+    public function buyOrdersList() {
+        return $this->callApiAuthenticated( '/v3/buys' );
+    }
+
+    /**
+     * Create a new buy order
+     *
+     * @param float $amount Amount that you want to buy BTC for - denominated in currency
+     * @param string $currency 3 letter ISO 4217 currency code denominating amount. Must be either BTC or your merchant account currency.
+     * @param string $btc_address The bitcoin address to send the bitcoins to.
+     * @param bool $instant_order Should this be an instant order or not?
+     * @param string $callback_url A URL that Coinify calls when the buy order state changes.
+     * @param string $callback_email An email address to send a mail to when the buy order state changes
+     * @return array A PHP array as described in https://coinify.com/docs/api/#response-format. If success,
+     * then the 'data' value contains the new buy order.
+     */
+    public function buyOrderCreate( $amount, $currency, $btc_address, $instant_order=null, $callback_url=null, $callback_email=null ) {
+        $params = [
+            'amount' => $amount,
+            'currency' => $currency,
+            'btc_address' => $btc_address,
+        ];
+
+        if ( $instant_order !== null ) $params['instant_order'] = boolval( $instant_order );
+        if ( $callback_url !== null ) $params['callback_url'] = $callback_url;
+        if ( $callback_email !== null ) $params['callback_email'] = $callback_email;
+
+        return $this->callApiAuthenticated( "/v3/buys", "POST", $params );
+    }
+
+    /**
+     * Confirm a buy order
+     *
+     * @link https://coinify.com/docs/api/#get-a-specific-buy-order
+     *
+     * @param int $buy_order_id
+     * @return array A PHP array as described in https://coinify.com/docs/api/#response-format. If success,
+     * then the 'data' value contains the requested buy order.
+     */
+    public function buyOrderConfirm( $buy_order_id ) {
+        return $this->callApiAuthenticated( "/v3/buys/{$buy_order_id}/actions/confirm", "PUT" );
+    }
+
+    /**
+     * Get a specific buy order
+     *
+     * @link https://coinify.com/docs/api/#get-a-specific-buy-order
+     *
+     * @param int $buy_order_id
+     * @return array A PHP array as described in https://coinify.com/docs/api/#response-format. If success,
+     * then the 'data' value contains the requested buy order.
+     */
+    public function buyOrderGet( $buy_order_id ) {
+        return $this->callApiAuthenticated( "/v3/buys/{$buy_order_id}" );
+    }
+
+    /**
      * Perform an authenticated API call, using the
      * API key and secret provided in the constructor.
      *
@@ -171,6 +240,9 @@ class CoinifyAPI {
              */
             $this->last_curl_error = curl_error( $ch );
             $this->last_curl_errno = curl_errno( $ch );
+
+            // Remember to close the cURL object
+            curl_close( $ch );
             return false;
         }
 
@@ -179,6 +251,7 @@ class CoinifyAPI {
          */
         $response = json_decode( $json_response, true );
 
+        // Remember to close the cURL object
         curl_close( $ch );
 
         return $response;
