@@ -9,13 +9,13 @@
 class CoinifyAPI {
 
     /**
-     * Coinify API key. Get yours at https://coinify.com/merchant/api
+     * Coinify API key. Get yours at https://www.coinify.com/merchant/api
      *
      * @var string
      */
     private $api_key;
     /**
-     * Coinify API secret. Get yours at https://coinify.com/merchant/api
+     * Coinify API secret. Get yours at https://www.coinify.com/merchant/api
      *
      * @var string
      */
@@ -62,9 +62,9 @@ class CoinifyAPI {
     /**
      * Returns an array of all your Coinify invoices
      *
-     * @link https://coinify.com/docs/api/#list-all-invoices
+     * @link https://www.coinify.com/docs/api/#list-all-invoices
      *
-     * @return array A PHP array as described in https://coinify.com/docs/api/#response-format. If success,
+     * @return array A PHP array as described in https://www.coinify.com/docs/api/#response-format. If success,
      * then the 'data' value contains a list of all your invoices.
      */
     public function invoicesList() {
@@ -74,7 +74,7 @@ class CoinifyAPI {
     /**
      * Create a new invoice.
      *
-     * @link https://coinify.com/docs/api/#create-an-invoice
+     * @link https://www.coinify.com/docs/api/#create-an-invoice
      *
      * @param float $amount Fiat price of the invoice
      * @param string $currency 3 letter ISO 4217 currency code denominating amount
@@ -86,7 +86,7 @@ class CoinifyAPI {
      * @param string $callback_email An email address to send a mail to when the invoice state changes
      * @param string $return_url We redirect your customer to this URL to when the invoice has been paid
      * @param string $cancel_url We redirect your customer to this URL if they cancel the invoice (not yet in use)
-     * @return array A PHP array as described in https://coinify.com/docs/api/#response-format. If success,
+     * @return array A PHP array as described in https://www.coinify.com/docs/api/#response-format. If success,
      * then the 'data' value contains the new invoice.
      */
     public function invoiceCreate( $amount, $currency, $plugin_name, $plugin_version,
@@ -95,8 +95,6 @@ class CoinifyAPI {
         $params = [
             'amount' => $amount,
             'currency' => $currency,
-            'return_url' => $return_url,
-            'cancel_url' => $cancel_url,
             'plugin_name' => $plugin_name,
             'plugin_version' => $plugin_version,
         ];
@@ -114,10 +112,10 @@ class CoinifyAPI {
     /**
      * Get a specific invoice
      *
-     * @link https://coinify.com/docs/api/#get-a-specific-invoice
+     * @link https://www.coinify.com/docs/api/#get-a-specific-invoice
      *
      * @param $invoice_id
-     * @return array A PHP array as described in https://coinify.com/docs/api/#response-format. If success,
+     * @return array A PHP array as described in https://www.coinify.com/docs/api/#response-format. If success,
      * then the 'data' value contains the requested invoice.
      */
     public function invoiceGet( $invoice_id ) {
@@ -127,12 +125,12 @@ class CoinifyAPI {
     /**
      * Update the description and custom data of an invoice
      *
-     * @link https://coinify.com/docs/api/#update-an-invoice
+     * @link https://www.coinify.com/docs/api/#update-an-invoice
      *
      * @param int $invoice_id The ID of the invoice you want to update
      * @param string $description Your custom text for this invoice.
      * @param array $custom Your custom data for this invoice
-     * @return array A PHP array as described in https://coinify.com/docs/api/#response-format. If success,
+     * @return array A PHP array as described in https://www.coinify.com/docs/api/#response-format. If success,
      * then the 'data' value contains the updated invoice.
      */
     public function invoiceUpdate( $invoice_id, $description=null, $custom=null ) {
@@ -147,9 +145,9 @@ class CoinifyAPI {
     /**
      * Returns an array of all your Coinify buy orders
      *
-     * @link https://coinify.com/docs/api/#list-all-buy-orders
+     * @link https://www.coinify.com/docs/api/#list-all-buy-orders
      *
-     * @return array A PHP array as described in https://coinify.com/docs/api/#response-format. If success,
+     * @return array A PHP array as described in https://www.coinify.com/docs/api/#response-format. If success,
      * then the 'data' value contains a list of all your buy orders.
      */
     public function buyOrdersList() {
@@ -165,7 +163,7 @@ class CoinifyAPI {
      * @param bool $instant_order Should this be an instant order or not?
      * @param string $callback_url A URL that Coinify calls when the buy order state changes.
      * @param string $callback_email An email address to send a mail to when the buy order state changes
-     * @return array A PHP array as described in https://coinify.com/docs/api/#response-format. If success,
+     * @return array A PHP array as described in https://www.coinify.com/docs/api/#response-format. If success,
      * then the 'data' value contains the new buy order.
      */
     public function buyOrderCreate( $amount, $currency, $btc_address, $instant_order=null, $callback_url=null, $callback_email=null ) {
@@ -185,10 +183,10 @@ class CoinifyAPI {
     /**
      * Confirm a buy order
      *
-     * @link https://coinify.com/docs/api/#get-a-specific-buy-order
+     * @link https://www.coinify.com/docs/api/#buy-order-confirm
      *
      * @param int $buy_order_id
-     * @return array A PHP array as described in https://coinify.com/docs/api/#response-format. If success,
+     * @return array A PHP array as described in https://www.coinify.com/docs/api/#response-format. If success,
      * then the 'data' value contains the requested buy order.
      */
     public function buyOrderConfirm( $buy_order_id ) {
@@ -198,10 +196,10 @@ class CoinifyAPI {
     /**
      * Get a specific buy order
      *
-     * @link https://coinify.com/docs/api/#get-a-specific-buy-order
+     * @link https://www.coinify.com/docs/api/#get-a-specific-buy-order
      *
      * @param int $buy_order_id
-     * @return array A PHP array as described in https://coinify.com/docs/api/#response-format. If success,
+     * @return array A PHP array as described in https://www.coinify.com/docs/api/#response-format. If success,
      * then the 'data' value contains the requested buy order.
      */
     public function buyOrderGet( $buy_order_id ) {
@@ -214,7 +212,7 @@ class CoinifyAPI {
      *
      * @param string $path The API path, WITH leading slash, e.g. '/v3/invoices'
      * @param array $params Associative array of parameters to the API call
-     * @return array|false A PHP array as described in https://coinify.com/docs/api/#response-format,
+     * @return array|false A PHP array as described in https://www.coinify.com/docs/api/#response-format,
      * or false if the HTTP call couldn't be performed correctly.
      * If false, use the $last_curl_error and $last_curl_errno properties to
      * get the error.
