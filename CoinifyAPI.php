@@ -225,6 +225,17 @@ class CoinifyAPI {
     }
 
     /**
+     * Get the balance of a merchant
+     *
+     * @return array|false A PHP array as described in https://www.coinify.com/docs/api/#check-account-balance . If success,
+     *                     then the 'data' value contains the balance in BTC and fiat currency and also the base currency
+     *                     of the merchant that requests it.
+     */
+    public function balanceGet() {
+        return $this->callApiAuthenticated("/v3/balance");
+    }
+
+    /**
      * Perform an authenticated API call, using the
      * API key and secret provided in the constructor.
      *
