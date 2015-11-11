@@ -234,7 +234,8 @@ class CoinifyAPI {
      *                     or for a specified currency.
      */
     public function ratesGet($currency=null) {
-        return $this->callApiAuthenticated("/v3/rates/{$currency}");
+        $url = $currency === null ? "/v3/rates" : "/v3/rates/{$currency}";
+        return $this->callApiAuthenticated( $url );
     }
 
     /**
