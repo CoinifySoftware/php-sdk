@@ -37,6 +37,24 @@ if ( !$response['success'] ) {
 $invoices = $response['data'];
 ```
 
+### Rates
+With the [Coinify rates API](https://coinify.com/docs/api/#rates) you can *list* the buy and sell rates between Bitcoin and all currencies supported by us.
+It is a public end-point and no API key and secret are required.
+
+`buy` is the rate for buying (asking for)  a single unit of Bitcoins for the particular currency.
+`sell` is the rate for selling (bidding for) a single unit of Bitcoins for the particular currency.
+
+#### Listing rates for all currencies
+```php
+$response = $api->ratesGet();
+```
+
+#### Listing rates for a specific currency
+```php
+// f.e. $currency = 'USD';
+$response = $api->ratesGet($currency);
+```
+
 ### Invoices
 With the [Coinify invoice API](https://coinify.com/docs/api/#invoices), you can *list* all your invoices, *create* new invoices, *get* a specific invoice and *update* an existing invoice as follows:
 
