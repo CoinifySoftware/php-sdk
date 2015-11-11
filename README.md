@@ -58,6 +58,14 @@ $response = $api->ratesGet();
 $response = $api->ratesGet($currency);
 ```
 
+### Account
+With the [Coinify account API](https://coinify.com/docs/api/#account) you can execute operations or get data regarding your merchant account.
+
+#### Check account balance
+```php
+$response = $api->balanceGet();
+```
+
 ### Invoices
 With the [Coinify invoice API](https://coinify.com/docs/api/#invoices), you can *list* all your invoices, *create* new invoices, *get* a specific invoice and *update* an existing invoice as follows:
 
