@@ -37,6 +37,27 @@ if ( !$response['success'] ) {
 $invoices = $response['data'];
 ```
 
+### Rates
+With the [Coinify rates API](https://coinify.com/docs/api/#rates) you can *list* the current exchange rates for all supported currencies. 
+Returned rates will define the exchange rate for the number of fiat currency units equivalent to one BTC.
+
+This end-point is public and no API key/secret is needed.
+
+`buy` is the rate for buying BTC from Coinify.
+
+`sell` is the rate for selling BTC to Coinify.
+
+#### Listing rates for all currencies
+```php
+$response = $api->ratesGet();
+```
+
+#### Listing rates for a specific currency
+```php
+// f.e. $currency = 'USD';
+$response = $api->ratesGet($currency);
+```
+
 ### Account
 With the [Coinify account API](https://coinify.com/docs/api/#account) you can execute operations or get data regarding your merchant account.
 
