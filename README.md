@@ -41,8 +41,8 @@ $invoices = $response['data'];
 With the [Coinify rates API](https://coinify.com/docs/api/#rates) you can *list* the buy and sell rates between Bitcoin and all currencies supported by us.
 It is a public end-point and no API key and secret are required.
 
-`buy` is the rate for buying (asking for)  a single unit of Bitcoins for the particular currency.
-`sell` is the rate for selling (bidding for) a single unit of Bitcoins for the particular currency.
+`buy` is the rate for buying one bitcoin for the particular currency.
+`sell` is the rate for selling one bitcoin for the particular currency.
 
 #### Listing rates for all currencies
 ```php
