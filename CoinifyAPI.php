@@ -49,11 +49,11 @@ class CoinifyAPI {
     const API_DEFAULT_BASE_URL = "https://api.coinify.com";
 
     /**
-     * @param string $api_key Your Coinify API key
-     * @param string $api_secret Your Coinify API secret
+     * @param string|null $api_key Your Coinify API key
+     * @param string|null $api_secret Your Coinify API secret
      * @param string|null $api_base_url Custom API base URL for testing. Set to null for default URL
      */
-    public function __construct( $api_key, $api_secret, $api_base_url=null ) {
+    public function __construct( $api_key=null, $api_secret=null, $api_base_url=null ) {
         $this->api_key = $api_key;
         $this->api_secret = $api_secret;
         $this->api_base_url = $api_base_url !== null ? $api_base_url : self::API_DEFAULT_BASE_URL;
@@ -222,6 +222,20 @@ class CoinifyAPI {
      */
     public function buyOrderGet( $buy_order_id ) {
         return $this->callApiAuthenticated( "/v3/buys/{$buy_order_id}" );
+    }
+
+    /**
+     * Return buy and sell rates for all available currencies or for the specified currency.
+     *
+     * @param string|null $currency A 3-char currency code
+     *
+     * @return array|false A PHP array as described in https://www.coinify.com/docs/api/#rates . If success,
+     *                     then the 'data' value contains buy and sell rates for all supported by us currencies
+     *                     or for a specified currency.
+     */
+    public function ratesGet($currency=null) {
+        $url = $currency === null ? "/v3/rates" : "/v3/rates/{$currency}";
+        return $this->callApiAuthenticated( $url );
     }
 
     /**
