@@ -75,6 +75,7 @@ $response = $api->invoicesList();
 ```
 
 The interface for the `invoiceList` method is the following:
+
 ```php
 public function invoicesListGet();
 ```
@@ -90,9 +91,14 @@ $response = $api->invoiceCreate(20.0, "USD", $plugin_name, $plugin_version);
 ```
 
 The interface for the `invoiceCreate` method is the following:
+
 ```php
-public function invoiceCreate($amount, $currency, $plugin_name, $plugin_version,
-    $description=null, $custom=null, $callback_url=null, $callback_email=null, $return_url=null, $cancel_url=null);
+public function invoiceCreate($amount, $currency, 
+    $plugin_name, $plugin_version,
+    $description=null, $custom=null, 
+    $callback_url=null, $callback_email=null, 
+    $return_url=null, $cancel_url=null,
+    $input_currency=null, $input_return_address=null);
 ```
 
 #### Get a specific invoice
@@ -102,6 +108,7 @@ $response = $api->invoiceGet($invoice_id);
 ```
 
 The interface for the `invoiceGet` method is the following:
+
 ```php
 public function invoiceGet($invoice_id);
 ```
@@ -113,8 +120,23 @@ $response = $api->invoiceUpdate($invoice_id, 'Updated description');
 ```
 
 The interface for the `invoiceUpdate` method is the following:
+
 ```php
 public function invoiceUpdate($invoice_id, $description=null, $custom=null);
+```
+
+#### Pay with another input currency
+```php
+$invoice_id = 12345;
+$currency = 'LTC';
+$return_address = 'Ler4HNAEfwYhBmGXcFP2Po1NpRUEiK8km2';
+$response = $api->invoiceInputCreate($invoice_id, $currency, $return_address);
+```
+
+The interface for the `invoiceInputCreate` method is the following:
+
+```php
+public function invoiceInputCreate($invoice_id, $currency, $return_address);
 ```
 
 ### Buy orders
@@ -130,6 +152,7 @@ $response = $api->buyOrdersList();
 ```
 
 The interface for the `buyOrdersList` method is the following:
+
 ```php
 public function buyOrdersList();
 ```
@@ -141,6 +164,7 @@ $response = $api->buyOrderGet($buy_order_id);
 ```
 
 The interface for the `buyOrderGet` method is the following:
+
 ```php
 public function buyOrderGet($buy_order_id);
 ```
@@ -157,6 +181,7 @@ $response = $api->buyOrderCreate( $amount, $currency, $btc_address );
 ```
 
 The interface for the `buyOrderCreate` method is the following:
+
 ```php
 public function buyOrderCreate( $amount, $currency, $btc_address, 
     $instant_order=null, $callback_url=null, $callback_email=null );
@@ -169,10 +194,18 @@ $response = $api->buyOrderConfirm($buy_order_id);
 ```
 
 The interface for the `buyOrderConfirm` method is the following:
+
 ```php
 public function buyOrderConfirm($buy_order_id);
 ```
 
+### Input currencies
+Apart from receiving payments in Bitcoin (`BTC`), we also support a range of other input currencies such as Litecoin (`LTC`), Ether (`ETH`), and Dogecoin (`DOGE`).
+
+#### Supported input currencies
+```php
+$response = $api->inputCurrenciesList();
+```
 
 ### Catching errors
 As touched upon in the "Response format" section, if the responses from the API calls are `false`, an error occurred with cURL trying to communicate with the API. The last cURL error and error number can be retrieved with `$api->last_curl_error` and `$api->last_curl_errno`.
