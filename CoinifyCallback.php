@@ -8,7 +8,7 @@
 class CoinifyCallback {
 
     /**
-     * Coinify IPN callback secret. Get yours at https://www.coinify.com/merchant/ipn
+     * Coinify IPN callback secret. Get yours at https://merchant.coinify.com/merchant/ipn
      *
      * @var string
      */

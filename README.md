@@ -2,7 +2,7 @@
 A PHP wrapper for Coinify merchant API and callbacks
 
 This PHP-SDK consists of two classes, `CoinifyApi` and `CoinifyCallback`, which are designed to make it easier for you,
-the developer, to utilize the [Coinify API](https://coinify.com/docs/api) and validate [IPN callbacks](https://coinify.com/docs/api/#callbacks) from Coinify, respectively. 
+the developer, to utilize the [Coinify API](https://merchant.coinify.com/docs/api) and validate [IPN callbacks](https://merchant.coinify.com/docs/api/#callbacks) from Coinify, respectively. 
 
 ## CoinifyAPI
 
@@ -16,7 +16,7 @@ $api = new CoinifyAPI($api_key, $api_secret);
 ```
 
 ### Response format
-The `CoinifyAPI` returns responses as they are described in [Response format](https://coinify.com/docs/api/#response-format) in the API documentation.
+The `CoinifyAPI` returns responses as they are described in [Response format](https://merchant.coinify.com/docs/api/#response-format) in the API documentation.
 
 The JSON responses are automatically decoded into PHP associative arrays, so you can for example do the following:
 
@@ -38,7 +38,7 @@ $invoices = $response['data'];
 ```
 
 ### Rates
-With the [Coinify rates API](https://coinify.com/docs/api/#rates) you can *list* the current exchange rates for all supported currencies. 
+With the [Coinify rates API](https://merchant.coinify.com/docs/api/#rates) you can *list* the current exchange rates for all supported currencies. 
 Returned rates will define the exchange rate for the number of fiat currency units equivalent to one BTC.
 
 This end-point is public and no API key/secret is needed.
@@ -59,7 +59,7 @@ $response = $api->ratesGet($currency);
 ```
 
 ### Account
-With the [Coinify account API](https://coinify.com/docs/api/#account) you can execute operations or get data regarding your merchant account.
+With the [Coinify account API](https://merchant.coinify.com/docs/api/#account) you can execute operations or get data regarding your merchant account.
 
 #### Check account balance
 ```php
@@ -67,7 +67,7 @@ $response = $api->balanceGet();
 ```
 
 ### Invoices
-With the [Coinify invoice API](https://coinify.com/docs/api/#invoices), you can *list* all your invoices, *create* new invoices, *get* a specific invoice and *update* an existing invoice as follows:
+With the [Coinify invoice API](https://merchant.coinify.com/docs/api/#invoices), you can *list* all your invoices, *create* new invoices, *get* a specific invoice and *update* an existing invoice as follows:
 
 #### Listing all invoices
 ```php
@@ -140,7 +140,7 @@ public function invoiceInputCreate($invoice_id, $currency, $return_address);
 ```
 
 ### Buy orders
-With the [Coinify Buy order API](https://coinify.com/docs/api/#buy-orders), *preapproved* merchants
+With the [Coinify Buy order API](https://merchant.coinify.com/docs/api/#buy-orders), *preapproved* merchants
 can use their fiat account balance to buy bitcoins. The API exposes methods
 for *listing* all buy orders, *getting* a specific buy order, and *create* and *confirm*
 new buy orders:
@@ -210,7 +210,7 @@ $response = $api->inputCurrenciesList();
 ### Catching errors
 As touched upon in the "Response format" section, if the responses from the API calls are `false`, an error occurred with cURL trying to communicate with the API. The last cURL error and error number can be retrieved with `$api->last_curl_error` and `$api->last_curl_errno`.
 
-If the response is not `false`, but instead an (associative) array, the [response format](https://coinify.com/docs/api/#response-format) from the API documentation is used, which can communicate an error (if `$response['success']` is `false`) or a successful API call (if `$response['success']` is `true`).
+If the response is not `false`, but instead an (associative) array, the [response format](https://merchant.coinify.com/docs/api/#response-format) from the API documentation is used, which can communicate an error (if `$response['success']` is `false`) or a successful API call (if `$response['success']` is `true`).
 
 
 ## Validating callbacks
