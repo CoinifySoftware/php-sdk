@@ -263,13 +263,14 @@ class CoinifyAPI
     /**
      * Create a new buy order
      *
-     * @param float  $amount         Amount that you want to buy BTC for - denominated in currency
-     * @param string $currency       3 letter ISO 4217 currency code denominating amount. Must be either BTC or your
-     *                               merchant account currency.
-     * @param string $btc_address    The bitcoin address to send the bitcoins to.
-     * @param bool   $instant_order  Should this be an instant order or not?
-     * @param string $callback_url   A URL that Coinify calls when the buy order state changes.
-     * @param string $callback_email An email address to send a mail to when the buy order state changes
+     * @param float       $amount         Amount that you want to buy BTC for - denominated in currency
+     * @param string      $currency       3 letter ISO 4217 currency code denominating amount. Must be either BTC or your
+     *                                    merchant account currency.
+     * @param string      $btc_address    The bitcoin address to send the bitcoins to.
+     * @param bool|null   $instant_order  Should this be an instant order or not? Defaults to true
+     * @param string|null $callback_url   A URL that Coinify calls when the buy order state changes.
+     * @param string|null $callback_email An email address to send a mail to when the buy order state changes
+     * @param array|null  $custom         Your custom data for this invoice
      *
      * @return array A PHP array as described in https://merchant.coinify.com/docs/api/#response-format. If success,
      * then the 'data' value contains the new buy order.
@@ -280,12 +281,13 @@ class CoinifyAPI
         $btc_address,
         $instant_order = null,
         $callback_url = null,
-        $callback_email = null
+        $callback_email = null,
+        $custom = null
     ) {
         $params = [
             'amount'      => $amount,
             'currency'    => $currency,
-            'btc_address' => $btc_address,
+            'btc_address' => $btc_address
         ];
 
         if ($instant_order !== null) {
@@ -296,6 +298,9 @@ class CoinifyAPI
         }
         if ($callback_email !== null) {
             $params['callback_email'] = $callback_email;
+        }
+        if ($custom !== null) {
+            $params['custom'] = $custom;
         }
 
         return $this->callApiAuthenticated("/v3/buys", "POST", $params);
