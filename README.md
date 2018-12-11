@@ -184,7 +184,8 @@ The interface for the `buyOrderCreate` method is the following:
 
 ```php
 public function buyOrderCreate( $amount, $currency, $btc_address, 
-    $instant_order=null, $callback_url=null, $callback_email=null );
+    $instant_order=null, $callback_url=null, $callback_email=null,
+    $custom=null );
 ```
 
 #### Confirming a buy order
