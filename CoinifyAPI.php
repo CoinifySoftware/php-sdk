@@ -108,7 +108,8 @@ class CoinifyAPI
      * @param string|null $cancel_url           We redirect your customer to this URL if they cancel the invoice (not
      *                                          yet in use)
      * @param string|null $input_currency       Input currency that the invoice should be paid in, if not BTC.
-     *                                          See {@see inputCurrenciesGet()} for a list of supported input currencies.
+     *                                          See {@see inputCurrenciesGet()} for a list of supported input
+     *                                          currencies.
      * @param string|null $input_return_address The address (belonging to the $input_currency) that the money should be
      *                                          returned to in case of an error. Mandatory if $input_currency is not
      *                                          "BTC" or null - otherwise unused.
@@ -205,6 +206,67 @@ class CoinifyAPI
 
         return $this->callApiAuthenticated("/v3/invoices/{$invoice_id}", "PUT", $params);
     }
+
+    /**
+     * List all refunds for an invoice
+     *
+     * @link     https://merchant.coinify.com/docs/api/#list-refunds-for-invoice
+     *
+     * @param int $invoice_id The ID of the invoice you want to list refunds for
+     *
+     * @return array A PHP array as described in https://merchant.coinify.com/docs/api/#response-format. If success,
+     * then the 'data' value contains the refund object.
+     */
+    public function invoiceRefundsList($invoice_id)
+    {
+        return $this->callApiAuthenticated("/v3/invoices/{$invoice_id}/refunds");
+    }
+
+    /**
+     * Request a refund for an invoice
+     *
+     * @link     https://merchant.coinify.com/docs/api/#create-refund
+     *
+     * @param int         $invoice_id                          The ID of the invoice you want to update
+     * @param float       $amount                              Amount of $currency to refund
+     * @param string      $currency                            ISO 4217 currency code denominating $amount.
+     *                                                         This must be the currency that the invoice was credited
+     *                                                         in.
+     * @param string|null $email_address                       Email address of customer to refund to
+     * @param string|null $btc_address                         Bitcoin (BTC) address of customer to refund to
+     *
+     * @param bool|null   $use_payment_protocol_refund_address Override supplied email address and BTC address with
+     *                                                         BIP70 refund address if possible
+     *
+     * @return array A PHP array as described in https://merchant.coinify.com/docs/api/#response-format. If success,
+     * then the 'data' value contains the refund object.
+     */
+    public function invoiceRefundCreate(
+        $invoice_id,
+        $amount,
+        $currency,
+        $email_address,
+        $btc_address = null,
+        $use_payment_protocol_refund_address = true
+    ) {
+        $params = [
+            'amount'   => $amount,
+            'currency' => $currency
+        ];
+
+        if ($email_address !== null) {
+            $params['email_address'] = $email_address;
+        }
+        if ($btc_address !== null) {
+            $params['btc_address'] = $btc_address;
+        }
+        if ($use_payment_protocol_refund_address !== null) {
+            $params['use_payment_protocol_refund_address'] = boolval($use_payment_protocol_refund_address);
+        }
+
+        return $this->callApiAuthenticated("/v3/invoices/{$invoice_id}/refunds", "POST", $params);
+    }
+
 
     /**
      * Request for an invoice to be paid with another input currency.
@@ -339,9 +401,9 @@ class CoinifyAPI
     /**
      * Get the balance of a merchant
      *
-     * @return array|false A PHP array as described in https://merchant.coinify.com/docs/api/#check-account-balance . If success,
-     *                     then the 'data' value contains the balance in BTC and fiat currency and also the base currency
-     *                     of the merchant that requests it.
+     * @return array|false A PHP array as described in https://merchant.coinify.com/docs/api/#check-account-balance . If
+     *                     success, then the 'data' value contains the balance in BTC and fiat currency and also the
+     *                     base currency of the merchant that requests it.
      */
     public function balanceGet()
     {
@@ -362,6 +424,24 @@ class CoinifyAPI
     public function ratesGet($currency = null)
     {
         $url = $currency === null ? "/v3/rates" : "/v3/rates/{$currency}";
+
+        return $this->callApi($url);
+    }
+
+    /**
+     * Return rates for all supported altcoins or for the specified altcoin.
+     *
+     * @link https://merchant.coinify.com/docs/api/#rates
+     *
+     * @param string|null $currency A 3-char altcoin code
+     *
+     * @return array|false A PHP array as described in https://merchant.coinify.com/docs/api/#rates . If success,
+     *                     then the 'data' value contains rates for all supported altcoins
+     *                     or for a specified altcoin.
+     */
+    public function altratesGet($currency = null)
+    {
+        $url = $currency === null ? "/v3/altrates" : "/v3/altrates/{$currency}";
 
         return $this->callApi($url);
     }
