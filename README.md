@@ -58,6 +58,17 @@ $response = $api->ratesGet();
 $response = $api->ratesGet($currency);
 ```
 
+#### Listing rates for all altcoins
+```php
+$response = $api->altratesGet();
+```
+
+#### Listing rates for a specific altcoin
+```php
+$currency = 'ETH';
+$response = $api->altratesGet($currency);
+```
+
 ### Account
 With the [Coinify account API](https://merchant.coinify.com/docs/api/#account) you can execute operations or get data regarding your merchant account.
 
@@ -124,6 +135,42 @@ The interface for the `invoiceUpdate` method is the following:
 ```php
 public function invoiceUpdate($invoice_id, $description=null, $custom=null);
 ```
+
+#### List all refunds for an invoice
+```php
+$invoice_id = 12345;
+$response = $api->invoiceRefundsList($invoice_id);
+```
+
+The interface for the `invoiceUpdate` method is the following:
+
+```php
+public function invoiceRefundsList($invoice_id);
+```
+
+#### Request a refund for an invoice
+```php
+$invoice_id = 12345;
+$amount = 20.50;
+$currency = 'EUR';
+$email_address = 'customer@example.com';
+
+$response = $api->invoiceRefundCreate($invoice_id, $amount, $currency, $email_address);
+```
+
+The interface for the `invoiceUpdate` method is the following:
+
+```php
+public function invoiceRefundCreate(
+    $invoice_id,
+    $amount,
+    $currency,
+    $email_address,
+    $btc_address = null,
+    $use_payment_protocol_refund_address = true
+);
+```
+
 
 #### Pay with another input currency
 ```php
